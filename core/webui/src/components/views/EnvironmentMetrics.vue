@@ -1,0 +1,4 @@
+<template>
+  <EnvTab />
+  metrics
+</template>

@@ -1,0 +1,9 @@
+apiVersion: 1
+
+datasources:
+- name: prometheus
+  type: prometheus
+  access: proxy
+  url: http://metrics.timoni-metrics.svc:8481/select/0/prometheus
+  uid: 0FPyLuV4k
+  isDefault: true

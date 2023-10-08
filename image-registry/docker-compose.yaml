@@ -1,0 +1,14 @@
+services:
+  devel:
+    build:
+      context: ..
+      dockerfile_inline: |
+        FROM golang:1.20.5-alpine3.18
+        WORKDIR /app
+
+        COPY lib lib
+        COPY image-registry image-registry
+        RUN go work init && go work use lib && go work use image-registry
+        RUN cd image-registry && go build -o /bin/image-registry
+
+        CMD ["/bin/image-registry"]

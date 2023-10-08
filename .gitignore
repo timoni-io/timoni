@@ -1,0 +1,6 @@
+.todoignore
+.vscode
+
+/_build
+timoni-ctl
+core/run.sh

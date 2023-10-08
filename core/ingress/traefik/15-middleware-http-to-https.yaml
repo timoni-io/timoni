@@ -1,0 +1,10 @@
+# Redirect to https
+kind: Middleware
+apiVersion: traefik.containo.us/v1alpha1
+metadata:
+  namespace: timoni
+  name: http-to-https
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true

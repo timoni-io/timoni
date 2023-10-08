@@ -1,0 +1,63 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: debian-repo
+  namespace: env-bc2ded07b6e0
+spec:
+  policyTypes:
+    - Egress
+  podSelector:
+    matchLabels:
+      element: wordpress
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 146.75.122.132/32
+      ports:
+        - protocol: TCP
+          port: 80
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns-access
+  namespace: env-bc2ded07b6e0
+spec:
+  podSelector:
+    matchLabels:
+      element: wordpress
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-mysql-access
+  namespace: env-bc2ded07b6e0
+spec:
+  podSelector:
+    matchLabels:
+      element: wordpress
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              element: mysql
+      ports:
+        - protocol: TCP
+          port: 3306

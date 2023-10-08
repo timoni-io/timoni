@@ -1,0 +1,13 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: varnish
+  namespace: timoni-metrics
+spec:
+  selector:
+    matchLabels:
+      element: varnish
+  namespaceSelector:
+    any: true
+  podMetricsEndpoints:
+    - port: p9131

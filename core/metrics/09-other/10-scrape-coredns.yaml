@@ -1,0 +1,14 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: coredns
+  namespace: timoni-metrics
+spec:
+  selector:
+    matchLabels:
+      k8s-app: kube-dns
+  namespaceSelector:
+    any: false
+    matchNames: [kube-system]
+  podMetricsEndpoints:
+    - port: metrics

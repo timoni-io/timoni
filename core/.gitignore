@@ -1,0 +1,28 @@
+/data
+/timoni
+run-front.sh
+
+.todoignore
+.vscode/launch.json
+.vscode/tasks.json
+.vscode/settings.json
+
+npm-lock.yaml
+pnpm-lock.yaml
+
+/webui/vue.config.js
+/webui/vite.config.js
+/webui/build-commit
+/webui/cypress/config.json
+/webui/cypress/integration/1-getting-started
+/webui/cypress/integration/2-advanced-examples
+/webui/node_modules/
+/webui/dist
+
+# testy:
+/tests/cypress/videos
+/tests/cypress/screenshots
+/tests/cypress/reports/mocha
+
+# binarki:
+/core

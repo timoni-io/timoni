@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-traefik
+  namespace: timoni
+
+spec:
+  type: LoadBalancer
+  selector:
+    element: ingress-traefik
+
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      name: web
+
+    - protocol: TCP
+      port: 443
+      targetPort: 443
+      name: websecure

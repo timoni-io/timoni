@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: timoni-metrics
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vm-operator
+  namespace: timoni-metrics
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    control-plane: vm-operator
+  name: vm-operator
+  namespace: timoni-metrics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      control-plane: vm-operator
+  template:
+    metadata:
+      labels:
+        control-plane: vm-operator
+    spec:
+      containers:
+        - args:
+            - --enable-leader-election
+            - --loggerFormat=json
+          command:
+            - manager
+          env:
+            - name: WATCH_NAMESPACE
+              value: ""
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: vm-operator
+          image: victoriametrics/operator:v0.35.1
+          imagePullPolicy: Always
+          name: manager
+          resources:
+            limits:
+              cpu: 2000m
+              memory: 1000Mi
+            requests:
+              cpu: 100m
+              memory: 200Mi
+      serviceAccountName: vm-operator
+      terminationGracePeriodSeconds: 10

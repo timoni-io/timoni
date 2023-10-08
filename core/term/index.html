@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="term/node_modules/xterm/css/xterm.css" />
+    <script src="term/node_modules/xterm/lib/xterm.js"></script>
+    <script src="term/node_modules/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
+    <script src="term/node_modules/xterm-addon-web-links/lib/xterm-addon-web-links.js"></script>
+    <style>
+        body {
+            background-color: #000000;
+            margin: 0;
+        }
+    </style>
+    <title>{{TITLE}}</title>
+</head>
+
+<body>
+    <div id="terminal" style="height: 100vh"></div>
+    <script>
+        const term = new Terminal({
+            allowProposedApi: true,
+            screenKeys: true,
+            macOptionIsMeta: true,
+            cursorBlink: true,
+        });
+
+        const fitAddon = new FitAddon.FitAddon();
+        term.loadAddon(fitAddon);
+        term.loadAddon(new WebLinksAddon.WebLinksAddon());
+
+        const websocket = new WebSocket("{{URL}}");
+        websocket.binaryType = "arraybuffer";
+
+        const textEnc = new TextEncoder();
+        const textDec = new TextDecoder();
+
+        websocket.onopen = function (evt) {
+            term.onData(function (data) {
+                websocket.send(textEnc.encode("\x00" + data));
+            });
+
+            term.onResize(function (evt) {
+                websocket.send(textEnc.encode("\x01" + JSON.stringify({ cols: evt.cols, rows: evt.rows })));
+                fitAddon.fit();
+            });
+
+            window.onresize = function () {
+                fitAddon.fit();
+            }
+
+            term.onTitleChange(function (title) {
+                document.title = "{{TITLE}}" + title;
+            });
+
+            term.attachCustomKeyEventHandler(function (e) {
+                // Ctrl + Shift + C
+                if (e.ctrlKey && e.shiftKey && e.key == "C") {
+                    document.execCommand('copy');
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            term.open(document.getElementById('terminal'));
+            fitAddon.fit();
+
+            websocket.onmessage = function (evt) {
+                term.write(textDec.decode(evt.data));
+            }
+
+            websocket.onclose = function (evt) {
+                term.write("\n\rSession terminated");
+            }
+
+            websocket.onerror = function (evt) {
+                console.log(evt)
+            }
+        }
+    </script>
+</body>
+
+</html>

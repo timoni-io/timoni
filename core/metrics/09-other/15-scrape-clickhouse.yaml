@@ -1,0 +1,14 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: clickhouse
+  namespace: timoni-metrics
+spec:
+  selector:
+    matchLabels:
+      app: clickhouse
+  namespaceSelector:
+    any: false
+    matchNames: [timoni]
+  podMetricsEndpoints:
+    - port: metrics

@@ -1,0 +1,36 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAgent
+metadata:
+  name: vmagent
+  namespace: timoni-metrics
+spec:
+  serviceScrapeNamespaceSelector: {}
+  podScrapeNamespaceSelector: {}
+  podScrapeSelector: {}
+  serviceScrapeSelector: {}
+  nodeScrapeSelector: {}
+  nodeScrapeNamespaceSelector: {}
+  replicaCount: 1
+  extraArgs:
+    opentsdbHTTPListenAddr: ":4242"
+  remoteWrite:
+    - url: "http://vminsert-vmcluster-persistent.timoni-metrics.svc.cluster.local:8480/insert/0/prometheus/api/v1/write"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vmagent-vmagent2
+  namespace: timoni-metrics
+spec:
+  ports:
+    - port: 8429
+      targetPort: 8429
+      protocol: TCP
+      name: http
+    - port: 4242
+      targetPort: 4242
+      protocol: TCP
+      name: opentsdb-http
+  selector:
+    app.kubernetes.io/name: vmagent

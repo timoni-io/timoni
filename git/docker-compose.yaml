@@ -1,0 +1,14 @@
+services:
+  devel:
+    build:
+      context: ..
+      dockerfile_inline: |
+        FROM golang:1.20.5-alpine3.18
+        WORKDIR /app
+
+        COPY lib lib
+        COPY git git
+        RUN go work init && go work use lib && go work use git
+        RUN cd git && go build -o /bin/git-server
+
+        CMD ["/bin/git-server"]

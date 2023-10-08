@@ -1,0 +1,17 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: registry
+  namespace: timoni-metrics
+spec:
+  selector:
+    matchLabels:
+      element: core
+  namespaceSelector:
+    any: false
+    matchNames: [timoni]
+  endpoints:
+    - port: p4002
+      scheme: https
+      tlsConfig:
+        insecureSkipVerify: true

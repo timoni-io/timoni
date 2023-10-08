@@ -1,0 +1,45 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMCluster
+metadata:
+  name: vmcluster-persistent
+  namespace: timoni-metrics
+spec:
+  retentionPeriod: "4"
+  replicationFactor: {{VictoriaMetricsClusterSize}}
+  vmstorage:
+    podMetadata:
+      labels:
+        element: "vmstorage-vmcluster-persistent"
+    replicaCount: {{VictoriaMetricsClusterSize}}
+    storageDataPath: "/vm-data"
+    storage:
+      volumeClaimTemplate:
+        spec:
+          resources:
+            requests:
+              storage: 30Gi
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1000Mi
+      limits:
+        # cpu: 2
+        memory: 6000Mi
+  vmselect:
+    replicaCount: {{VictoriaMetricsClusterSize}}
+    cacheMountPath: "/select-cache"
+    storage:
+      volumeClaimTemplate:
+        spec:
+          resources:
+            requests:
+              storage: 4Gi
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1000Mi
+      limits:
+        # cpu: 2
+        memory: 6000Mi
+  vminsert:
+    replicaCount: {{VictoriaMetricsClusterSize}}

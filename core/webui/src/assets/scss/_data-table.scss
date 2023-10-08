@@ -1,0 +1,22 @@
+.n-data-table-td {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+.n-data-table .n-data-table-table,
+.n-data-table .n-data-table-th,
+.n-data-table .n-data-table-thead {
+    background: none;
+}
+
+.n-data-table-tr:hover {
+    background: none !important;
+}
+
+.n-data-table-th {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+    font-size: var(--fontSizeMini);
+
+    color: rgba(134, 134, 134, 0.5) !important; // TOOD: uwzględnić jasną skórkę
+}

@@ -1,0 +1,14 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: cert-manager
+  namespace: timoni-metrics
+spec:
+  selector:
+    matchLabels:
+      app: cert-manager
+  namespaceSelector:
+    any: false
+    matchNames: [cert-manager]
+  podMetricsEndpoints:
+    - port: metrics

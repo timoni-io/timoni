@@ -1,0 +1,12 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: node-exporter
+  namespace: timoni-metrics
+spec:
+  selector:
+    matchLabels:
+      app: node-exporter
+  podMetricsEndpoints:
+    - port: scrape
+      scheme: http

@@ -1,0 +1,13 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: memcached
+  namespace: timoni-metrics
+spec:
+  selector:
+    matchLabels:
+      element: memcached
+  namespaceSelector:
+    any: true
+  podMetricsEndpoints:
+    - port: p9150

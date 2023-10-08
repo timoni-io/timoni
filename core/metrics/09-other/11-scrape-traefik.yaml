@@ -1,0 +1,14 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMPodScrape
+metadata:
+  name: traefik
+  namespace: timoni-metrics
+spec:
+  selector:
+    matchLabels:
+      element: ingress-traefik
+  namespaceSelector:
+    any: false
+    matchNames: [timoni]
+  podMetricsEndpoints:
+    - port: p9000
