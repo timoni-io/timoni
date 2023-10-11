@@ -6,4 +6,5 @@ metadata:
   name: headers
 spec:
   headers:
-    X-Frame-Options: "SAMEORIGIN"
+    customResponseHeaders:
+      X-Frame-Options: "SAMEORIGIN"
