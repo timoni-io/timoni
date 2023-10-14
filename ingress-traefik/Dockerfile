@@ -18,7 +18,11 @@ CMD ["/bin/ep", \
     "--log.format=json", \
     "--api.dashboard", \
     "--providers.kubernetescrd", \
+    "--providers.kubernetescrd.allowemptyservices=true", \
+    "--providers.kubernetescrd.allowexternalnameservices=true", \
     "--providers.kubernetesingress", \
+    "--providers.kubernetesingress.allowemptyservices=true", \
+    "--providers.kubernetesingress.allowexternalnameservices=true", \
     "--entrypoints.web.address=:80", \
     "--entrypoints.websecure.address=:443", \
     "--entrypoints.traefik.address=:9000" \
