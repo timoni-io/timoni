@@ -373,7 +373,7 @@ const handleClose = () => {
               v-for="key in Object.keys(users)"
               :key="key"
               v-model:checked="selectedTeamMembers[key]"
-              @update:checked="(checked) => handleCheckedChange(checked, key)"
+              @update:checked="(checked: boolean) => handleCheckedChange(checked, key)"
             >
               {{ users[key] }}
             </n-checkbox>
