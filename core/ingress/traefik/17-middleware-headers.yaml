@@ -1,0 +1,10 @@
+# Set the X-Frame-Options to SAMEORIGIN.
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  namespace: timoni
+  name: headers
+spec:
+  headers:
+    customResponseHeaders:
+      X-Frame-Options: "SAMEORIGIN"
