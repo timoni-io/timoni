@@ -29,6 +29,7 @@ func (c cronMode) Start() {
 
 	taskr.Task(global.CronExpression, func(ctx context.Context) (int, error) {
 		defer func() {
+			Reset()
 			taskCompleted = true
 		}()
 		if !taskCompleted {

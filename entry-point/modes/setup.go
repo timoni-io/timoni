@@ -64,3 +64,13 @@ func Setup() {
 	// cmd.Stderr = os.Stderr
 	// }
 }
+
+func Reset() {
+	// Copy previous pipes
+	stdout, stderr := cmd.Stdout, cmd.Stderr
+
+	// Recreate cmd
+	cmd = exec.Command(global.ProcessCommand[0], global.ProcessCommand[1:]...)
+	cmd.Env = os.Environ()
+	cmd.Stdout, cmd.Stderr = stdout, stderr
+}
