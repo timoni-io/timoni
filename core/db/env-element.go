@@ -393,6 +393,7 @@ func (element *elementS) VariablesGet(returnSecrets bool) map[string]string {
 		variables["EP_FIX_ENV"] = strings.Join(element.ApplyVariablesOnFiles, ";")
 	}
 
+
 	return variables
 }
 

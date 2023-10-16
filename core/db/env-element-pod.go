@@ -376,3 +376,13 @@ func (element *elementPodS) DeleteFromKube() *tlog.RecordS {
 
 	return nil
 }
+
+func (element *elementPodS) VariablesGet(returnSecrets bool) map[string]string {
+	variables := element.elementS.VariablesGet(returnSecrets)
+	
+	if element.Schedule != "" {
+		variables["EP_CRON_EXPRESSION"] = element.Schedule
+	}
+
+	return variables
+}
