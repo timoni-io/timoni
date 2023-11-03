@@ -33,18 +33,18 @@ type EnvironmentShortS struct {
 	ID            string
 	Name          string
 	Status        map[ElementState]int
-	ToDelete      bool 
+	ToDelete      bool
 	ElementsCount int
 }
 
 type EnvironmentS struct {
 	ID          string // random, unique
-	Name        string 
-	ClusterName string 
+	Name        string
+	ClusterName string
 
 	Schedule EnvironmentScheduleS
 	GitOps   EnvironmentGitOpsConfigS
-	ToDelete bool 
+	ToDelete bool
 
 	CreationTime   int64
 	LastChangeTime int64
@@ -132,7 +132,9 @@ func SyncWithDiskLoop() {
 
 				env := new(EnvironmentS)
 				if err := driver.Read(filepath.Join("env", envID), "env", env); err != nil {
-					tlog.Error(err)
+					tlog.Error(err, tlog.Vars{
+						"envID": envID,
+					})
 					continue
 				}
 
@@ -174,7 +176,6 @@ func (env *EnvironmentS) Save(user *UserS) *tlog.RecordS {
 	if err2 != nil {
 		return tlog.Error(err)
 	}
-
 
 	EnvironmentMap.Set(env.ID, env)
 
@@ -467,7 +468,7 @@ func (env *EnvironmentS) ElementVersionMap(elementName string) map[string]*Eleme
 
 	previousVestionTime := ""
 	if len(versionTimes) > 1 {
-		previousVestionTime = versionTimes[len(versionTimes)-1] 
+		previousVestionTime = versionTimes[len(versionTimes)-1]
 	}
 
 	for _, versionTime := range versionTimes {
@@ -822,7 +823,6 @@ func (env *EnvironmentS) FromGitOps() *tlog.RecordS {
 	if envInGit == nil {
 		return tlog.Error("env not found in git")
 	}
-
 
 	for elName, elSource := range envInGit.Element {
 
