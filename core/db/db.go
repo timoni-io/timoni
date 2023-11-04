@@ -90,8 +90,15 @@ func Open() {
 		t := NewTeam(AdminTeamName)
 		// all permissions
 		bitmap.SetAll(&t.Permissions.Global)
-		t.Permissions.Envs["*"] = t.Permissions.Global
-		t.Permissions.GitRepos["*"] = t.Permissions.Global
+		t.Permissions.Envs["id:*"] = t.Permissions.Global
+		t.Permissions.GitRepos["id:*"] = t.Permissions.Global
+		t.Save()
+	} else {
+		t := GetTeamByName(AdminTeamName)
+		// all permissions
+		bitmap.SetAll(&t.Permissions.Global)
+		t.Permissions.Envs["id:*"] = t.Permissions.Global
+		t.Permissions.GitRepos["id:*"] = t.Permissions.Global
 		t.Save()
 	}
 	if GetTeamByName(BlacklistedTeamName) == nil {

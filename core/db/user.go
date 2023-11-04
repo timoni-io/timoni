@@ -259,7 +259,7 @@ func (user *UserS) HasEnvPerm(envID string, perm permissions.EnvPerm) bool {
 			mask.Join(team.Permissions.Envs[tag])
 		}
 		// join glob env permissions
-		mask.Join(team.Permissions.Envs["*"])
+		mask.Join(team.Permissions.Envs["id:*"])
 	}
 
 	return bitmap.GetBit(mask, perm)
@@ -285,7 +285,7 @@ func (user *UserS) HasRepoPerm(repoName string, perm permissions.RepoPerm) bool 
 			mask.Join(team.Permissions.GitRepos[tag])
 		}
 		// join glob repo permissions
-		mask.Join(team.Permissions.GitRepos["*"])
+		mask.Join(team.Permissions.GitRepos["id:*"])
 	}
 	return bitmap.GetBit(mask, perm)
 }

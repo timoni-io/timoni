@@ -5,18 +5,23 @@ import (
 	"core/db2"
 	"core/imageregistry"
 	"core/term"
+	"crypto/x509"
 	"encoding/base64"
+	"encoding/pem"
 	"fmt"
 	log "lib/tlog"
 	"lib/utils"
+	"math"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/lukx33/lwhelper/out"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
@@ -235,6 +240,12 @@ func Loop() {
 
 	domain := db2.TheDomain
 	cert := domain.Cert()
+	certLeftDays := int(math.Ceil(time.Since(time.Unix(cert.ExpirationTime(), 0)).Hours()/24)) * -1
+
+	if certLeftDays <= 0 {
+		fmt.Println("certLeftDays=", certLeftDays, cert.ID(), domain.Name())
+		os.Exit(1)
+	}
 
 	certKeyFilePath := filepath.Join(config.DataPath(), "cert.key")
 	certPemFilePath := filepath.Join(config.DataPath(), "cert.pem")
@@ -251,4 +262,29 @@ func Loop() {
 		GetRouter(),
 	))
 
+}
+
+func pemExpiry(crtData []byte) time.Time {
+	block, rest := pem.Decode(crtData)
+	if block == nil {
+		fmt.Println("ERROR: crtData empty")
+		return time.Time{}
+	}
+
+	for ; block != nil; block, rest = pem.Decode(rest) {
+		if block.Type != "CERTIFICATE" {
+			continue
+		}
+		cert, err := x509.ParseCertificate(block.Bytes)
+		if out.New(err).NotValid() {
+			continue
+		}
+
+		if len(cert.DNSNames) == 0 {
+			continue
+		}
+
+		return cert.NotAfter
+	}
+	return time.Time{}
 }

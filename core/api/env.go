@@ -208,7 +208,7 @@ func apiEnvironmentInfo(r *http.Request, user *db.UserS) interface{} {
 	}
 
 	for _, t := range db.TeamMap.Values() {
-		if _, exist := t.Permissions.Envs["*"]; exist {
+		if _, exist := t.Permissions.Envs["id:*"]; exist {
 			collect(t)
 		}
 		if _, exist := t.Permissions.Envs["id:"+envID]; exist {
