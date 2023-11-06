@@ -132,7 +132,7 @@ func (element *elementDomainS) KubeApply() {
 				},
 				Labels: map[string]string{
 					"manager":    "timoni",
-					"cert-id":    cert.ID(),
+					"cert-id":    cert.ID()[:30],
 					"expiration": fmt.Sprint(cert.ExpirationTime()),
 				},
 			}
