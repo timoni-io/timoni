@@ -132,15 +132,16 @@ func (element *elementDomainS) KubeApply() {
 				},
 				Labels: map[string]string{
 					"manager":    "timoni",
-					"certID":     cert.ID(),
+					"cert-id":    cert.ID(),
 					"expiration": fmt.Sprint(cert.ExpirationTime()),
 				},
 			}
-			secret.CreateOrUpdate()
+			_, err := secret.CreateOrUpdate()
+			tlog.Error(err)
 		}
 	}
 
-	fmt.Println("domain:", element.Domain, https, element.EnvironmentID)
+	// fmt.Println("domain:", element.Domain, https, element.EnvironmentID)
 
 	ingress := kube.Ingress2S{
 		KubeClient:  kClient,
