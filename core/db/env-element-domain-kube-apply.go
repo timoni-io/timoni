@@ -140,6 +140,8 @@ func (element *elementDomainS) KubeApply() {
 		}
 	}
 
+	fmt.Println("domain:", element.Domain, https, element.EnvironmentID)
+
 	ingress := kube.Ingress2S{
 		KubeClient:  kClient,
 		Namespace:   element.EnvironmentID,
