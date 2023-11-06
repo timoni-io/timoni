@@ -131,7 +131,9 @@ func (element *elementDomainS) KubeApply() {
 					"tls.key": []byte(cert.Key()),
 				},
 				Labels: map[string]string{
-					"manager": "timoni",
+					"manager":    "timoni",
+					"certID":     cert.ID(),
+					"expiration": fmt.Sprint(cert.ExpirationTime()),
 				},
 			}
 			secret.CreateOrUpdate()
