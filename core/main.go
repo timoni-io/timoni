@@ -14,6 +14,7 @@ import (
 	"core/metrics"
 	"core/modulestate"
 	"os"
+	"syscall"
 )
 
 func main() {
@@ -25,6 +26,8 @@ func main() {
 	defer db.PanicHandler()
 
 	// -----------------------------------------------------------------------------
+
+	setResolvConf()
 
 	db.Open()  // old local db
 	db2.Open() // new local db
@@ -45,4 +48,12 @@ func main() {
 	go metrics.Setup()
 
 	kubesync.Loop()
+}
+
+func setResolvConf() {
+	if syscall.Geteuid() != 0 {
+		return
+	}
+
+	os.WriteFile("/etc/resolv.conf", []byte("nameserver 8.8.8.8\n"), 0644)
 }
