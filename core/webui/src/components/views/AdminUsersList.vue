@@ -202,7 +202,7 @@ onBeforeMount(() => {
       <n-card
         size="small"
         :title="t('objects.member', 2)"
-        style="min-height: 90vh; position: relative"
+        class="data-table-card"
       >
         <template #header-extra>
           <PopModal
@@ -243,6 +243,7 @@ onBeforeMount(() => {
         <data-table
           :columns="columns"
           :data="usersList"
+          class="data-table"
           v-if="usersList"
         >
           <template #name="row">
@@ -274,7 +275,7 @@ onBeforeMount(() => {
                 style="display: flex; gap: 5px"
               >
                 <div
-                  v-for="team in row.Teams.slice().sort((a: string, b: string) => teams[a].localeCompare(teams[b]))"
+                  v-for="team in row.Teams.slice().sort((a: string, b: string) => teams[a]?.localeCompare(teams[b]))"
                   :key="team"
                 >
                   <n-tag

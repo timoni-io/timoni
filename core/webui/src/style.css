@@ -1,0 +1,20 @@
+.data-table-card {
+    height: 90vh; 
+    position: relative;
+}
+
+.data-table-card > .n-card__content {
+    height: 90%;
+}
+
+.data-table {
+    height: 100%;
+}
+
+.data-table > .n-data-table-wrapper {
+    height: 100%;
+}
+
+.data-table > .n-data-table-wrapper > .n-data-table-base-table {
+    height: 100%;
+}

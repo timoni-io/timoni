@@ -201,7 +201,7 @@ const handleClose = () => {
       <n-card
         size="small"
         :title="t('fields.team', 2)"
-        style="min-height: 90vh; position: relative"
+        class="data-table-card"
       >
         <template #header-extra>
           <PopModal
@@ -242,6 +242,7 @@ const handleClose = () => {
         <data-table
           :columns="columns"
           :data="teamList"
+          class="data-table"
           v-if="teamList"
         >
           <template #name="row">

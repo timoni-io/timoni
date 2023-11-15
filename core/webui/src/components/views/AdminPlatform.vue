@@ -39,10 +39,15 @@ onMounted(() => {
       >
         <n-card
           :title="platformData ? t('adminPanel.platform') : ''"
+          class="data-table-card"
           size="small"
         >
           <Spinner :data="platformData">
-            <data-table :columns="columns" :data="platformData">
+            <data-table
+              :columns="columns"
+              :data="platformData"
+              class="data-table"
+            >
             </data-table>
           </Spinner>
         </n-card>
