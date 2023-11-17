@@ -18,3 +18,12 @@
 .data-table > .n-data-table-wrapper > .n-data-table-base-table {
     height: 100%;
 }
+
+.data-spinner {
+    height: 100%;
+}
+
+.data-spinner > .n-spin-content {
+    height: 100%;
+    overflow-y: auto;
+}

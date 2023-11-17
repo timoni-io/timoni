@@ -68,8 +68,8 @@ onMounted(() => {
   <div>
     <AdminTabs />
     <PageLayout>
-      <n-card class="admin-cards" size="small">
-        <Spinner :data="imagesKeys">
+      <n-card class="data-table-card admin-cards" size="small">
+        <Spinner :data="imagesKeys" class="data-spinner">
           <n-space
             class="card-header"
             style="
