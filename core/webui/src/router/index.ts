@@ -70,11 +70,6 @@ const router = createRouter({
       component: () => import("@/components/views/EnvironmentOperators.vue"),
     },
     {
-      name: "Modals Demo",
-      path: "/modals",
-      component: () => import("@/components/views/ModalsDemo.vue"),
-    },
-    {
       name: "admin-platform",
       path: "/admin/platform",
       component: () => import("@/components/views/AdminPlatform.vue"),
