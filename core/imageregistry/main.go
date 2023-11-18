@@ -11,14 +11,11 @@ import (
 	"time"
 
 	"github.com/distribution/distribution/v3/configuration"
-	dcontext "github.com/distribution/distribution/v3/context"
 	"github.com/distribution/distribution/v3/health"
 	"github.com/distribution/distribution/v3/registry/handlers"
 	"github.com/distribution/distribution/v3/registry/storage"
 	"github.com/distribution/distribution/v3/registry/storage/driver/factory"
-	"github.com/distribution/distribution/v3/version"
 	"github.com/docker/go-metrics"
-	"github.com/docker/libtrust"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
 
@@ -66,12 +63,14 @@ func Start(r *mux.Router) {
 		return
 	}
 
-	ctx := dcontext.WithVersion(context.Background(), version.Version)
-	ctx, err = configureLogging(ctx, config)
-	if err != nil {
-		log.Error("error configuring logger: ", err)
-		return
-	}
+	// ctx := dcontext.WithVersion(context.Background(), version.Version)
+	// ctx, err = configureLogging(ctx, config)
+	// if err != nil {
+	// 	log.Error("error configuring logger: ", err)
+	// 	return
+	// }
+
+	ctx := context.Background()
 
 	// New registry
 	app := handlers.NewApp(ctx, config)
@@ -170,11 +169,11 @@ func configureLogging(ctx context.Context, config *configuration.Configuration) 
 			fields = append(fields, k)
 		}
 
-		ctx = dcontext.WithValues(ctx, config.Log.Fields)
-		ctx = dcontext.WithLogger(ctx, dcontext.GetLogger(ctx, fields...))
+		// ctx = dcontext.WithValues(ctx, config.Log.Fields)
+		// ctx = dcontext.WithLogger(ctx, dcontext.GetLogger(ctx, fields...))
 	}
 
-	dcontext.SetDefaultLogger(dcontext.GetLogger(ctx))
+	// dcontext.SetDefaultLogger(dcontext.GetLogger(ctx))
 	return ctx, nil
 }
 
@@ -192,20 +191,21 @@ func CollectGarbage() {
 		return
 	}
 
-	driver, err := factory.Create(config.Storage.Type(), config.Storage.Parameters())
-	if err != nil {
-		log.Error(err)
-		return
-	}
-
 	ctx := context.Background()
-	k, err := libtrust.GenerateECP256PrivateKey()
+	driver, err := factory.Create(ctx, config.Storage.Type(), config.Storage.Parameters())
 	if err != nil {
 		log.Error(err)
 		return
 	}
 
-	registry, err := storage.NewRegistry(ctx, driver, storage.Schema1SigningKey(k))
+	// k, err := libtrust.GenerateECP256PrivateKey()
+	// if err != nil {
+	// 	log.Error(err)
+	// 	return
+	// }
+
+	// registry, err := storage.NewRegistry(ctx, driver, storage.Schema1SigningKey(k))
+	registry, err := storage.NewRegistry(ctx, driver)
 	if err != nil {
 		log.Error(err)
 		return
