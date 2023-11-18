@@ -187,7 +187,10 @@ func getUser(sessionID string, r *http.Request, w http.ResponseWriter) *db.UserS
 		})
 		w.WriteHeader(http.StatusForbidden)
 		w.Write(apiEncodeResponse(
-			tlog.Error("user is blacklisted"),
+			tlog.RecordS{
+				Level:   tlog.LevelWarning,
+				Message: "user is blacklisted",
+			},
 			r.URL.String(),
 		))
 		w.WriteHeader(http.StatusUnauthorized)
@@ -195,13 +198,16 @@ func getUser(sessionID string, r *http.Request, w http.ResponseWriter) *db.UserS
 	}
 
 	if sess.Expired() {
-		tlog.Warning("session is expired", tlog.Vars{
-			"logger":  "apiMiddleware",
-			"url":     r.URL,
-			"user-ip": userIP,
-		})
+		// tlog.Warning("session is expired", tlog.Vars{
+		// 	"logger":  "apiMiddleware",
+		// 	"url":     r.URL,
+		// 	"user-ip": userIP,
+		// })
 		w.Write(apiEncodeResponse(
-			tlog.Error("`session` is expired"),
+			tlog.RecordS{
+				Level:   tlog.LevelWarning,
+				Message: "`session` is expired",
+			},
 			r.URL.String(),
 		))
 		w.WriteHeader(http.StatusBadRequest)
