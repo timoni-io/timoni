@@ -171,6 +171,9 @@ func (i *Ingress2S) CreateOrUpdate() (diff string, status *log.RecordS) {
 			ingress.Spec.TLS[0].Hosts = append(ingress.Spec.TLS[0].Hosts, "www."+i.Domain)
 		}
 	}
+	if i.WWWredirect {
+		traefikMiddlewares = append(traefikMiddlewares, "timoni-remove-www@kubernetescrd")
+	}
 
 	if i.Auth != "" {
 		// ingress basic auth

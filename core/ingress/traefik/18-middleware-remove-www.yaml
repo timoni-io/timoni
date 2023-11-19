@@ -1,0 +1,11 @@
+# Redirect to https
+kind: Middleware
+apiVersion: traefik.containo.us/v1alpha1
+metadata:
+  namespace: timoni
+  name: remove-www
+spec:
+  redirectRegex:
+    regex: "^http(s?)://www\\.(.*)"
+    replacement: "http${1}://${2}"
+    permanent: false
