@@ -30,6 +30,7 @@ type Ingress2S struct {
 	Labels              map[string]string
 	Paths               map[string]*DomainPathS
 	HTTPS               bool
+	WWWredirect         bool
 	HTTPSSecretName     string
 	MaxUploadSize       int // MB
 	Timeout             int // default 60 sec
@@ -137,6 +138,17 @@ func (i *Ingress2S) CreateOrUpdate() (diff string, status *log.RecordS) {
 		}},
 	}
 
+	if i.WWWredirect {
+		ingress.Spec.Rules = append(ingress.Spec.Rules, netV1.IngressRule{
+			Host: "www." + i.Domain,
+			IngressRuleValue: netV1.IngressRuleValue{
+				HTTP: &netV1.HTTPIngressRuleValue{
+					Paths: paths,
+				},
+			},
+		})
+	}
+
 	// ---
 
 	if ingress.ObjectMeta.Annotations == nil {
@@ -154,6 +166,10 @@ func (i *Ingress2S) CreateOrUpdate() (diff string, status *log.RecordS) {
 			SecretName: i.HTTPSSecretName,
 		}}
 		traefikMiddlewares = append(traefikMiddlewares, "timoni-http-to-https@kubernetescrd")
+
+		if i.WWWredirect {
+			ingress.Spec.TLS[0].Hosts = append(ingress.Spec.TLS[0].Hosts, "www."+i.Domain)
+		}
 	}
 
 	if i.Auth != "" {

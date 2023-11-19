@@ -149,6 +149,7 @@ func (element *elementDomainS) KubeApply() {
 		Name:        ingName,
 		Domain:      element.Domain,
 		Annotations: element.Annotations,
+		WWWredirect: element.WWWredirect,
 		Labels: map[string]string{
 			"timoni-env": element.EnvironmentID,
 			// "timoni-version": release.Env.CurrentReleaseID,
