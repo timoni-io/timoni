@@ -20,7 +20,7 @@ func main() {
 	os.Setenv("LOG_MODE", "mjson")
 	os.Setenv("TZ", "UTC")
 	os.Setenv("GIT_TERMINAL_PROMPT", "0")
-	os.Setenv("GIT_SSH_COMMAND", "ssh -i /data/ssh_key -o IdentitiesOnly=yes")
+	os.Setenv("GIT_SSH_COMMAND", "ssh -i /data/ssh_keys -o IdentitiesOnly=yes")
 
 	defer db.PanicHandler()
 
