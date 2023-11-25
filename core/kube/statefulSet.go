@@ -392,10 +392,16 @@ func (s *StatefulSetS) CreateOrUpdate() (anyChange bool, err error) {
 				}
 			}
 
+			storName := (*string)(nil)
+			if store.Class != "" {
+				storName = &store.Class
+			}
+
 			fs := corev1.PersistentVolumeFilesystem
 			pvc.Spec = corev1.PersistentVolumeClaimSpec{
-				VolumeMode:  &fs,
-				AccessModes: []corev1.PersistentVolumeAccessMode{corev1.ReadWriteOnce},
+				VolumeMode:       &fs,
+				AccessModes:      []corev1.PersistentVolumeAccessMode{corev1.ReadWriteOnce},
+				StorageClassName: storName,
 				Resources: corev1.ResourceRequirements{
 					// Limits: corev1.ResourceList{
 					// corev1.ResourceName(corev1.ResourceStorage): resource.MustParse(fmt.Sprintf("%dMi", volSize)),
